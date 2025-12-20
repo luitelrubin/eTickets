@@ -30,5 +30,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-
+// Seed database
+AppDbInitializer.Seed(app);
 app.Run();
