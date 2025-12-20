@@ -17,7 +17,7 @@ namespace eTickets.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<ActorMovie> ActorsMovies { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
-        public DbSet<Movie> Movie { get; set; }
+        public DbSet<Movie> Movies { get; set; }
         public DbSet<Producer> Producers { get; set; }
     }
 }
