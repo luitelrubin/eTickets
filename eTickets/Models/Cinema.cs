@@ -1,16 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using eTickets.Data.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace eTickets.Models
 {
-    public class Cinema
+    public class Cinema : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+        [Display(Name = "Logo URL")]
+        [Required(ErrorMessage = "*Required field")]
         public string LogoUrl { get; set; } = String.Empty;
+        [Display(Name = "Name")]
+        [Required(ErrorMessage = "*Required field")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Must have at least 3 and at most 50 characters")]
         public string Name { get; set; } = String.Empty;
+
+        [Display(Name = "Description")]
+        [Required(ErrorMessage = "*Required field")]
         public string Description { get; set; } = String.Empty;
 
         // Relationships
-        public List<Movie> Movies { get; set; } = null!;
+        public List<Movie> Movies { get; set; } = new List<Movie>();
     }
 }

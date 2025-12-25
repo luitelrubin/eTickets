@@ -3,22 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eTickets.Models
 {
-    public class Actor : EntityBase
+    public class Director : EntityBase
     {
         [Display(Name = "Profile Picture URL")]
         [Required(ErrorMessage = "*Required field")]
         public string ProfilePictureUrl { get; set; } = String.Empty;
-
         [Display(Name = "Full Name")]
         [Required(ErrorMessage = "*Required field")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Full name must contain at least 3 and at most 50 characters")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Must be at least 3 chars and at most 50 chars long")]
         public string FullName { get; set; } = String.Empty;
-
         [Display(Name = "Biography")]
         [Required(ErrorMessage = "*Required field")]
         public string Bio { get; set; } = String.Empty;
-
-        // Relationships
-        public List<ActorMovie> ActorsMovies { get; set; } = new List<ActorMovie>();
+        [Display(Name = "Movies")]
+        public List<Movie> Movies { get; set; } = new List<Movie>();
     }
 }
