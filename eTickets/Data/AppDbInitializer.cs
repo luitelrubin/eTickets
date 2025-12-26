@@ -91,9 +91,9 @@ namespace eTickets.Data
                     context.SaveChanges();
                 }
                 // Producers
-                if (!context.Producers.Any())
+                if (!context.Directors.Any())
                 {
-                    context.Producers.AddRange(new List<Director>()
+                    context.Directors.AddRange(new List<Director>()
                     {
                         new Director()
                         {
