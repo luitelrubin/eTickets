@@ -1,0 +1,8 @@
+﻿@model int;
+
+@if (Model > 0)
+{
+    <li class="nav-item me-3">
+        <a asp-controller="Orders" asp-action="ShoppingCart" class="text-dark text-decoration-none"><i class="bi bi-cart4"></i >@Model</a>
+    </li>
+}
