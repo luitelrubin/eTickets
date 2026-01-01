@@ -1,10 +1,13 @@
 ﻿using eTickets.Data.Cart;
 using eTickets.Data.Services;
 using eTickets.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace eTickets.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMoviesService _moviesService;
@@ -32,8 +35,9 @@ namespace eTickets.Controllers
 
         public async Task<IActionResult> Index()
         {
-            string userId = "testUserId";
-            var orders = await _ordersService.GetOrderByUserIdAsync(userId);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new ArgumentNullException("User id not found");
+            string userRole = User.FindFirstValue(ClaimTypes.Role) ?? throw new ArgumentNullException("User role not found");
+            var orders = await _ordersService.GetOrderByUserIdAndRoleAsync(userId, userRole);
             return View(orders);
         }
         public async Task<RedirectToActionResult> AddToShoppingCart(int id)
@@ -60,8 +64,8 @@ namespace eTickets.Controllers
         public async Task<IActionResult> CompleteOrder([FromBody] CompleteOrderRequestVM request)
         {
             var items = _shoppingCart.GetShoppingCartItems();
-            const string userId = "testUserId";
-            const string userEmail = "test@etickets.com";
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new ArgumentNullException("User Id not found");
+            string userEmail = User.FindFirstValue(ClaimTypes.Email) ?? throw new ArgumentNullException("User Email not found");
 
             await _ordersService.StoreOrderAsync(items, userId, userEmail);
             await _shoppingCart.ClearShoppingCartAsync();

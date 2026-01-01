@@ -1,12 +1,14 @@
 ﻿using eTickets.Data;
 using eTickets.Data.ViewModels;
 using eTickets.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eTickets.Controllers
 {
-
+    [Authorize]
     public class AccountsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,11 +20,17 @@ namespace eTickets.Controllers
             _signinManager = signinManager;
             _context = context;
         }
+        public async Task<IActionResult> Users()
+        {
+            var users = await _context.Users.ToListAsync();
+            return View(users);
+        }
         public IActionResult Login()
         {
             var response = new LoginVM();
             return View(response);
         }
+
         [HttpPost]
         public async Task<IActionResult> Login([Bind("EmailAddress, Password")] LoginVM lvm)
         {
@@ -50,6 +58,41 @@ namespace eTickets.Controllers
             //return Content("User not found. Plese register first or login with a valid email address.");
             return View(lvm);
 
+        }
+        public IActionResult Register()
+        {
+            var response = new RegisterVM();
+            return View(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterVM rvm)
+        {
+            if (!ModelState.IsValid) return View(rvm);
+            var user = await _userManager.FindByEmailAsync(rvm.EmailAddress);
+            if (user != null)
+            {
+                TempData["Error"] = "User exists already, enter another email or try logging in instead";
+                return View(rvm);
+            }
+            var newUser = new ApplicationUser
+            {
+                FullName = rvm.FullName,
+                Email = rvm.EmailAddress,
+                UserName = rvm.EmailAddress
+            };
+            var response = await _userManager.CreateAsync(newUser, rvm.Password);
+            if (response.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, "User");
+            }
+            return View("RegistrationCompleted");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signinManager.SignOutAsync();
+            return RedirectToAction("Index", "Movies");
         }
     }
 }

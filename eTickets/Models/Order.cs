@@ -6,6 +6,7 @@ namespace eTickets.Models
     {
         public string Email { get; set; } = String.Empty;
         public string UserId { get; set; } = string.Empty;
+        public ApplicationUser User { get; set; }
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
