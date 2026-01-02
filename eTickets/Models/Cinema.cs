@@ -5,7 +5,7 @@ namespace eTickets.Models
 {
     public class Cinema : EntityBase
     {
-        [Display(Name = "Logo URL")]
+        [Display(Name = "Logo")]
         [Required(ErrorMessage = "*Required field")]
         public string LogoUrl { get; set; } = String.Empty;
         [Display(Name = "Name")]

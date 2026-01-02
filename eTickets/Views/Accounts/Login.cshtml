@@ -16,25 +16,24 @@
         <p>
             <h4>Log in to your account</h4>
         </p>
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <form asp-action="Login">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>  
-                    <div class="mb-3">
-                        <label asp-for="EmailAddress" class="form-label">@Html.DisplayNameFor(l => l.EmailAddress)</label>
-                        <input asp-for="EmailAddress" class="form-control" />
-                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label">@Html.DisplayNameFor(l => l.Password)</label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <input type="submit" value="Log In" class="btn btn-outline-success float-end" />
-                    <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-                </form>
-            </div>
-        </div>
 
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="EmailAddress" class="form-label">@Html.DisplayNameFor(l => l.EmailAddress)</label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">@Html.DisplayNameFor(l => l.Password)</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Log In" class="btn btn-outline-success float-end" />
+            <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
     </div>
+</div>
+
+</div>
 </div>

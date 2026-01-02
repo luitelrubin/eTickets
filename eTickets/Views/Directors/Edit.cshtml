@@ -14,8 +14,11 @@
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                    <div class="form-group">
+                        <input asp-for="Id" class="form-control" type="hidden" />
+                    </div>
                     <div class="form-group text-center">
-                        <img src="~/@Model.ProfilePictureUrl" id="ProfilePictureUrl" class="border-info rounded-circle" style="max-height: 150px" />
+                        <img src="~/@Model.ProfilePictureUrl" id="ProfilePictureUrl" class="border-info rounded-circle" style="width:150px;height:150px;object-fit:cover;object-position:center top;" />
                     </div>
                     <div class="form-group">
                         <label asp-for="Id" class="control-label"></label>
@@ -47,11 +50,4 @@
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        $("#ProfilePictureUrl").on("change", function () {
-            var output = document.getElementById('ProfilePicturePreview');
-            output.src = ~/@Model.ProfilePictureUrl;
-        })
-    </script>
-}
+<partial name="_ImageLoad"></partial>

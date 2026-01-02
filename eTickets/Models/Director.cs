@@ -5,7 +5,7 @@ namespace eTickets.Models
 {
     public class Director : EntityBase
     {
-        [Display(Name = "Profile Picture URL")]
+        [Display(Name = "Profile Picture")]
         [Required(ErrorMessage = "*Required field")]
         public string ProfilePictureUrl { get; set; } = String.Empty;
         [Display(Name = "Full Name")]

@@ -1,4 +1,5 @@
 ﻿using eTickets.Data;
+using eTickets.Data.Cart;
 using eTickets.Data.ViewModels;
 using eTickets.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,23 +15,27 @@ namespace eTickets.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signinManager;
         private readonly AppDbContext _context;
-        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signinManager, AppDbContext context)
+        private readonly ShoppingCart _shoppingCart = null!;
+        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signinManager, ShoppingCart shoppingCart, AppDbContext context)
         {
             _userManager = userManager;
             _signinManager = signinManager;
             _context = context;
+            _shoppingCart = shoppingCart;
         }
         public async Task<IActionResult> Users()
         {
             var users = await _context.Users.ToListAsync();
             return View(users);
         }
+        [AllowAnonymous]
         public IActionResult Login()
         {
             var response = new LoginVM();
             return View(response);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login([Bind("EmailAddress, Password")] LoginVM lvm)
         {
@@ -59,11 +64,13 @@ namespace eTickets.Controllers
             return View(lvm);
 
         }
+        [AllowAnonymous]
         public IActionResult Register()
         {
             var response = new RegisterVM();
             return View(response);
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM rvm)
         {
@@ -91,6 +98,7 @@ namespace eTickets.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
+            await _shoppingCart.ClearShoppingCartAsync();
             await _signinManager.SignOutAsync();
             return RedirectToAction("Index", "Movies");
         }

@@ -5,10 +5,15 @@ using eTickets.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var nepaliCulture = new CultureInfo("en-NP"); // Nepali Rs
+nepaliCulture.NumberFormat.CurrencySymbol = "Rs. ";
+CultureInfo.DefaultThreadCurrentCulture = nepaliCulture;
+CultureInfo.DefaultThreadCurrentUICulture = nepaliCulture;
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection String 'DefaultConnection' not found");
 
@@ -32,6 +37,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddSession();
+
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
 

@@ -1,13 +1,11 @@
 ﻿using eTickets.Data.Cart;
 using eTickets.Data.Services;
 using eTickets.Data.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace eTickets.Controllers
 {
-    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMoviesService _moviesService;
@@ -60,8 +58,7 @@ namespace eTickets.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CompleteOrder([FromBody] CompleteOrderRequestVM request)
+        public async Task<IActionResult> CompleteOrder()
         {
             var items = _shoppingCart.GetShoppingCartItems();
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new ArgumentNullException("User Id not found");
@@ -69,7 +66,7 @@ namespace eTickets.Controllers
 
             await _ordersService.StoreOrderAsync(items, userId, userEmail);
             await _shoppingCart.ClearShoppingCartAsync();
-            return View("OrderCompleted");
+            return View();
         }
     }
 }

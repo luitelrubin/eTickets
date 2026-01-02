@@ -7,18 +7,16 @@ namespace eTickets.Data.Cart
     public class ShoppingCart
     {
         private readonly AppDbContext _context;
-        public string ShoppingCartId { get; set; }
+        public string ShoppingCartId { get; set; } = String.Empty;
         public List<ShoppingCartItem> ShoppingCartItems { get; set; }
         public ShoppingCart(AppDbContext context)
         {
-            ShoppingCartItems = new List<ShoppingCartItem>();
-            ShoppingCartId = String.Empty;
             _context = context;
         }
         public static ShoppingCart GetShoppingCart(IServiceProvider services)
         {
-            var session = services.GetRequiredService<IHttpContextAccessor>().HttpContext?.Session ?? throw new InvalidOperationException("HTTPContext is required for shopping cart");
-            var appDbContext = services.GetRequiredService<AppDbContext>();
+            var session = services.GetRequiredService<IHttpContextAccessor>().HttpContext?.Session ?? throw new ArgumentNullException("HTTPContext is required for shopping cart");
+            var appDbContext = services.GetService<AppDbContext>();
 
             string cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
             session.SetString("CartId", cartId);

@@ -7,7 +7,7 @@
 
 @* Write Code *@
 <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-10 offset-md-1">
         <p>
             <h4>List of all users</h4>
         </p>
@@ -27,9 +27,17 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelitem => item.FullName)</td>>
-                        <td>@Html.DisplayFor(modelitem => item.UserName)</td>>
+                        <td>@Html.DisplayFor(modelitem => item.FullName)</td>
+                        <td>@Html.DisplayFor(modelitem => item.UserName)</td>
                         <td>@Html.DisplayFor(modelitem => item.Email)</td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a> |
+                                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a> |
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>

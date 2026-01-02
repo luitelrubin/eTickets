@@ -28,9 +28,8 @@
                         <td class="align-middle">
                             <a class="text-success" asp-action="AddToShoppingCart" asp-route-id="@item.Movie.Id">
                                 <i class="bi bi-cart-plus"></i>
-                            </a>
-                            <a class="text-danger" asp-action="RemoveFromShoppingCart" asp-route-id="@item.Movie.Id">
-                                <i class="bi bi-cart-dash"></i>
+                            </a> | 
+                            <a class="text-danger" asp-action="RemoveFromShoppingCart" asp-route-id="@item.Movie.Id"><i class="bi bi-cart-dash"></i>
                             </a>
                         </td>
                     </tr>
@@ -50,28 +49,30 @@
             <a class="btn btn-outline-primary" asp-controller="Movies" asp-action="Index">
                 Add more items
             </a>
+            @* <a class="btn btn-outline-secondary" asp-controller="Order" asp-action="CompleteOrder">
+                Checkout (Development)
+            </a> *@
 
         </div>
     </div>
 </div>
 
-@section Scripts {
-
+@section Scripts {    
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
     <script>
-
-        let _total = @Html.Raw(Model.ShoppingCartTotal);
+        let _total = @Html.Raw(Model.ShoppingCartTotal)
 
         paypal.Button.render({
             //Configure environment
             env: 'sandbox',
             client: {
-                sandbox: 'AX2aHzP886vm5xnIHVhOUZzmbUsslIXvxY9yjhYLEUIqePzZWDiWWuBm6WXFTUp3aGNHq7c2g063DZOM'
+                sandbox: 'enter-client-id',
             },
 
             //Customize button
             locale: 'en_US',
+            currency: 'USD',
             style: {
                 size: 'small',
                 color: 'gold',
@@ -90,15 +91,23 @@
                     }]
                 });
             },
-
+            
             //Execute the payment
             onAuthorize: function (data, actions) {
                 return actions.payment.execute().then(function () {
                     var url = '@Url.Action("CompleteOrder", "Orders", new { })';
                     window.location.href = url;
                 });
+            },
+
+            // Handle error
+            onerror: function(err){
+                console.error('PayPal Error:', err);
+                alert('Payment Error: ' + (err.message || 'An error occurred during payment'));
             }
 
         }, '#paypal-btn')
     </script>
 }
+
+
