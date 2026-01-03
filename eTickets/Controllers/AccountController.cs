@@ -94,7 +94,6 @@ namespace eTickets.Controllers
         [HttpPost, Authorize]
         public async Task<IActionResult> Logout()
         {
-            await _shoppingCart.ClearShoppingCartAsync();
             await _signinManager.SignOutAsync();
             return RedirectToAction("Index", "Movies");
         }
