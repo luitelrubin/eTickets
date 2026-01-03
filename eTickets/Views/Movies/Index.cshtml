@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "List of Movies";
-    
+
     var Today = DateOnly.FromDateTime(DateTime.Now);
 }
 
@@ -17,27 +17,31 @@
                             <p class="card-text">
                                 <h5 class="card-title">
                                     @item.Name
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="float-end"><i class="bi bi-pencil-square text-white"></i></a>
+                                    }
                                 </h5>
                             </p>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6">
-                        <img src="@item.ImageUrl" width="100%" alt="@item.Name">
+                        <img src="~/@item.ImageUrl" width="100%" alt="@item.Name">
                     </div>
-                    
+
                     <div class="col-md-6">
                         <div class="card-body" style="min-height:320px">
                             <p class="card-text">@item.Description</p>
-                            
+
                             <p class="card-text"><b>Cinema: </b>@item.Cinema.Name</p>
-                            
+
                             <p class="card-text"><b>Category: </b>@item.MovieCategory</p>
-                            
+
                             <p class="card-text"><b>Start Date: </b>@item.StartDate.ToString("dd MMM yy")</p>
-                            
+
                             <p class="card-text"><b>End Date: </b>@item.EndDate.ToString("dd MMM yy")</p>
-                            
+
                             <p class="card-text ">
                                 <b>Status: </b>
                                 @if (Today >= item.StartDate && Today <= item.EndDate)
@@ -55,8 +59,8 @@
                             </p>
                         </div>
                     </div>
-                    
-                    <div class="col-md-12" style="max-height:50px" >
+
+                    <div class="col-md-12" style="max-height:50px">
                         <div class="card-footer text-center">
                             <p class="card-text">
                                 <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
@@ -64,10 +68,10 @@
                                 </a>
                                 <a class="btn btn-success text-white @((Today > item.EndDate) ? "disabled" : "")"
                                    asp-controller="Orders"
-                                   asp-action="AddItemToShoppingCart"
+                                   asp-action="AddToShoppingCart"
                                    asp-route-id="@item.Id">
                                     <i class="bi bi-cart-plus"></i> Add to Cart (@item.Price.ToString("c"))
-                                </a> 
+                                </a>
                             </p>
                         </div>
                     </div>
@@ -76,3 +80,5 @@
         </div>
     }
 </div>
+
+@await Html.PartialAsync("_CreateItem", "Movies");

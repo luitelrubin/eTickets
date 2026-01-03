@@ -1,0 +1,85 @@
+﻿@using eTickets.Data.Enums;
+@model NewMovieVM
+
+@{
+    ViewData["Title"] = "Add new movie";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>Create a new movie</p>
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name" class="form-label"></label>
+                                <input asp-for="Name" class="form-control"/>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="form-label"></label>
+                                <input asp-for="StartDate" class="form-control" type="date"/>
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="form-label"></label>
+                                <input asp-for="EndDate" class="form-control" type="date"/>
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="form-label"></label>
+                                <input asp-for="Price" class="form-control"/>
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageUrl" class="form-label"></label>
+                                <input asp-for="ImageUrl" class="form-control" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CinemaId" class="form-label"></label>
+                                <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaList"></select>
+                                <span asp-validation-for="CinemaId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="MovieCategory" class="form-label"></label>
+                                <select asp-for="MovieCategory" class="form-control" asp-items="@Html.GetEnumSelectList<MovieCategory>()" ></select>
+                                <span asp-validation-for="MovieCategory" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DirectorId" class="form-label"></label>
+                                <select asp-for="DirectorId" class="form-control" asp-items="ViewBag.DirectorList"></select>
+                                <span asp-validation-for="DirectorId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ActorsIds" class="form-label"></label>
+                                <select asp-for="ActorsIds" class="form-control" asp-items="ViewBag.ActorList" multiple></select>
+                                <span asp-validation-for="ActorsIds" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Description" class="form-label"></label>
+                                <textarea asp-for="Description" class="form-control" ></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 offset-4">
+                            <img src="" alt=""/>
+                        </div>
+                        <div class="form-group">
+                            <a asp-action="Index" class="btn btn-outline-secondary float-start">View all</a>
+                            <input type="submit" value="Submit" class="btn btn-outline-success float-end"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
